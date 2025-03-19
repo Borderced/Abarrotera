@@ -5,6 +5,7 @@ import AltaAlumnos from './Alta-Alumnos/Alta-Alumnos.vue';
 import ActualizarAlumnos from './Actualizar-Alumnos/Actualizar-Alumnos.vue'; // Importar el componente de actualización
 import { useToast } from 'vue-toast-notification'; // Importa useToast
 import 'vue-toast-notification/dist/theme-sugar.css'; // Importa el tema de notificaciones
+import { actualizarAlumno } from '@/backend/services/api'; // Importa la función de actualización
 
 const Alumnos = ref([]);  // Almacenará los alumnos obtenidos de la API
 const error = ref('');  // Para manejar posibles errores
@@ -65,26 +66,39 @@ const eliminarAlumnoPorId = async (noControl) => {
 };
 
 // Función para modificar un alumno
-const modificarAlumno = (noControl) => {
-  const alumno = Alumnos.value.find(alumno => alumno.No_Control === noControl);
+const modificarAlumno = (idEmpleado) => {
+  console.log('ID recibido para modificar:', idEmpleado);
+  
+  const alumno = Alumnos.value.find(alumno => alumno.ID_EMPLEADO === idEmpleado);
+
   if (alumno) {
-    alumnoEditando.value = alumno; // Establece el alumno que se está editando
-    mostrarFormularioActualizar.value = true; // Muestra el formulario de actualización
-    mostrarFormulario.value = false; // Oculta el formulario de agregar
+    console.log('Alumno encontrado:', alumno);
+    alumnoEditando.value = alumno;
+    mostrarFormularioActualizar.value = true;
+    mostrarFormulario.value = false;
+  } else {
+    console.error('No se encontró el alumno con ID:', idEmpleado);
   }
 };
-
 // Función para guardar los cambios después de actualizar
 const guardarCambiosActualizados = async (alumnoActualizado) => {
   if (!alumnoActualizado) {
-    console.error('No se pudo obtener el alumno a actualizar');
+    console.error('No se pudo obtener el Empleado a actualizar');
     return;
   }
   try {
-    // Enviar la solicitud de actualización aquí
+     const response = await actualizarAlumno(
+      alumnoActualizado.id_empleado,
+      alumnoActualizado.nombre,
+      alumnoActualizado.rol,
+      alumnoActualizado.usuario,
+      alumnoActualizado.contrasena
+    );
+
+    
   } catch (err) {
-    console.error('Error al actualizar el alumno:', err);
-    toast.error('No se pudo actualizar el alumno. Intenta más tarde.', {
+    console.error('Error al actualizar el Empleado:', err);
+    toast.error('No se pudo actualizar el Empleado. Intenta más tarde.', {
       position: 'top-right',
       duration: 5000,
     });
@@ -139,7 +153,7 @@ const guardarCambiosActualizados = async (alumnoActualizado) => {
             <td>{{ alumno.ROL }}</td>
             <td>{{ alumno.USUARIO }}</td>
             <td class="actions">
-              <button @click="modificarAlumno(alumno.No_Control)" class="btn btn-modify">Modificar</button>
+              <button @click="modificarAlumno(alumno.ID_EMPLEADO)" class="btn btn-modify">Modificar</button>
               <button @click="eliminarAlumnoPorId(alumno.ID_EMPLEADO)" class="btn btn-delete">Eliminar</button>
             </td>
           </tr>
@@ -185,7 +199,7 @@ const guardarCambiosActualizados = async (alumnoActualizado) => {
 }
 
 .alumnos-table th {
-  background-color: #041d38;
+  background-color: #0b8a29;
   color: #ffff;
 }
 

@@ -1,9 +1,9 @@
 <script setup>
-import { ref } from 'vue'; // Variables reactivas
-import { useToast } from 'vue-toast-notification'; // Notificaciones
-import 'vue-toast-notification/dist/theme-sugar.css'; // Estilo de notificaciones
+import { ref, watch } from 'vue'; // Agregar `watch` para detectar cambios en `props`
+import { useToast } from 'vue-toast-notification';
+import 'vue-toast-notification/dist/theme-sugar.css';
 import { actualizarAlumno } from '@/backend/services/api';
-// Props: Recibe el alumno que se está editando
+
 const props = defineProps({
   alumno: {
     type: Object,
@@ -11,25 +11,25 @@ const props = defineProps({
   },
 });
 
-// Emits: Para comunicarse con el componente padre
 const emit = defineEmits(['guardar', 'cancelar']);
-
-// Variables reactivas para los campos del formulario
-const id_empleado = ref(props.alumno.id_empleado || '');
-const nombre = ref(props.alumno.nombre || '');
-const rol = ref(props.alumno.rol || '');
-const usuario = ref(props.alumno.usuario || '');
-const contrasena = ref(props.alumno.contrasena || '');
-
-// Inicializa el toast para notificaciones
 const toast = useToast();
 
-// Función para modificar el alumno
+// Variables reactivas
+const id_empleado = ref(props.alumno.ID_EMPLEADO || '');
+const nombre = ref(props.alumno.NOMBRE || '');
+const rol = ref(props.alumno.ROL || '');
+const usuario = ref(props.alumno.USUARIO || '');
+const contrasena = ref(props.alumno.CONTRASENA || '');
+
+// Cargar datos cuando `props.alumno` cambiado
+
 const modificarAlumno = async () => {
-  // Validaciones
+  if (!id_empleado.value || !nombre.value || !rol.value || !usuario.value || !contrasena.value) {
+    toast.error('Todos los campos son obligatorios.', { position: 'top-right', duration: 5000 });
+    return;
+  }
 
   try {
-    // Llamada a la API para modificar el alumno
     const response = await actualizarAlumno(
       id_empleado.value,
       nombre.value,
@@ -38,40 +38,26 @@ const modificarAlumno = async () => {
       contrasena.value
     );
 
-    // Verificar si la respuesta es exitosa
     if (response.success) {
-      toast.success('Datos del alumno actualizados correctamente.', {
+      toast.success('Datos del empleado actualizados correctamente.', {
         position: 'top-right',
         duration: 5000,
-        dismissible: true,
       });
-      setTimeout(() => {
-        window.location.href = `/Empleados`; // Redirigir a la página del panel
-      }, 750);
-      emit('guardar', response.data); // Emitir el evento 'guardar' al componente padre
+      emit('guardar', response.data);
+      //setTimeout(() => (window.location.href = '/Empleados'), 750);
     } else {
-      toast.error(response.message || 'Hubo un error al actualizar los datos del Empleado.', {
-        position: 'top-right',
-        duration: 5000,
-        dismissible: true,
-      });
+      toast.error(response.message || 'Error al actualizar los datos.', { position: 'top-right' });
     }
   } catch (error) {
-    toast.error('Ocurrió un error al procesar la solicitud.', {
-      position: 'top-right',
-      duration: 5000,
-      dismissible: true,
-    });
-    console.error('Error al modificar el Empleado:', error);
+    toast.error('Error al procesar la solicitud.', { position: 'top-right' });
+    console.error('Error al modificar el empleado:', error.response?.data || error);
   }
 };
 
-// Función para cancelar la edición
 const cancelar = () => {
   emit('cancelar');
 };
 </script>
-
 
 <template>
   <div class="alta-alumno-container">
@@ -79,7 +65,7 @@ const cancelar = () => {
     <form @submit.prevent="modificarAlumno">
       <div class="form-group">
         <label for="id_empleado">Id del empleado:</label>
-        <input type="text" id="no_control" v-model="id_empleado" placeholder="Id de empleado" />
+        <input type="text" id="id_empleado" v-model="id_empleado" placeholder="Id de empleado" />
       </div>
 
       <div class="form-group">
@@ -98,14 +84,16 @@ const cancelar = () => {
       </div>
 
       <div class="form-group">
-        <label for="contraseña">Contraseña:</label>
+        <label for="contrasena">Contraseña:</label>
         <input type="password" id="contrasena" v-model="contrasena" placeholder="Contraseña" />
       </div>
 
       <button type="submit">Modificar</button>
+      <button type="button" @click="cancelar">Cancelar</button>
     </form>
   </div>
 </template>
+
 
 <style scoped>
 .alta-alumno-container {

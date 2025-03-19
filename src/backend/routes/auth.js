@@ -412,37 +412,26 @@ router.put('/auth/modificargrupo', async (req, res) => {
 
 // Ruta para modificar los datos del alumno
 router.put('/auth/modificaralumno/:id_empleado', async (req, res) => {
-  const { id_empleado } = req.params; // No_Control del alumno (recibido como parámetro en la URL)
-  const {
-    nombre,
-    rol,
-    usuario,
-    contrasena
-  } = req.body; // Datos del alumno a actualizar recibidos en el cuerpo de la solicitud
+  console.log('Datos recibidos en el backend:', req.body); // Agregar esta línea para depuración
+
+  const { id_empleado } = req.params;
+  const { nombre, rol, usuario, contrasena } = req.body;
+  console.log('ID empleado recibido en el backend:', id_empleado);
+
+
+  if (!id_empleado || !nombre || !rol || !usuario || !contrasena) {
+    return res.status(400).json({ success: false, message: 'Todos los campos son obligatorios' });
+  }
 
   try {
-    // Llamamos a la función que actualiza los datos del alumno
-    const updatedAlumno = await actualizarAlumno(
-      id_empleado,
-      nombre,
-      rol,
-      usuario,
-      contrasena
-    );
-
-    if (updatedAlumno.success) {
-      return res.status(200).json({
-        success: true,
-        message: 'Datos del Empleado actualizados con éxito'
-      });
+    const resultado = await actualizarAlumno(id_empleado, nombre, rol, usuario, contrasena);
+    if (resultado) {
+      return res.status(200).json({ success: true, message: 'Empleado actualizado correctamente' });
     } else {
-      return res.status(400).json({
-        success: false,
-        message: updatedAlumno.message || 'No se pudo actualizar los datos del Empleado'
-      });
+      return res.status(400).json({ success: false, message: 'No se pudo actualizar el empleado' });
     }
   } catch (error) {
-    console.error('Error al actualizar los datos del Empleado:', error);
+    console.error('Error al actualizar el empleado:', error);
     return res.status(500).json({ success: false, message: 'Error del servidor', error });
   }
 });

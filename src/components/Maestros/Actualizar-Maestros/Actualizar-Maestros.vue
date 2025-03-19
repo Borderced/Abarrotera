@@ -61,7 +61,7 @@ const modificarDocente = async () => {
       duration: 5000,
       dismissible: true,
     });
-    console.error('Error al modificar el Docente:', error);
+    console.error('Error al modificar el Producto:', error);
   }
 };
 

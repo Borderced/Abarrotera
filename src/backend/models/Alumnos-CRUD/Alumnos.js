@@ -45,7 +45,7 @@ export const actualizarAlumno = async (
   nombre,
   rol,
   usuario,
-  contrasena,
+  contrasena
 ) => {
   const query = `
     UPDATE empleados

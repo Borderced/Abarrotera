@@ -66,7 +66,7 @@ function toggleSidebar() {
 
 /* Barra de navegación fija */
 .navbar {
-    background-color: #041d38;
+    background-color: #215707;
     color: #fff;
     width: 250px;
     height: 100vh;
