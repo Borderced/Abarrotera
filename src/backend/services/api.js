@@ -352,14 +352,14 @@ export const actualizarAlumno = async (
   nombre,
   rol,
   usuario,
-  contrasena,
+  contrasena
 ) => {
   try {
     const response = await axios.put(`http://localhost:5000/api/auth/modificaralumno/${id_empleado}`, {
       nombre,
       rol,
       usuario,
-      contrasena,
+      contrasena
     });
 
     return response.data; // Devuelve la respuesta de la API
@@ -390,7 +390,7 @@ export const actualizarDocente = async (
 
     return response.data; // Devuelve la respuesta de la API
   } catch (error) {
-    console.error('Error al actualizar los datos del docente:', error);
+    console.error('Error al actualizar los datos del Empleado:', error);
     throw error; // Lanza el error para manejarlo en el componente
   }
 };

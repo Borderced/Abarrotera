@@ -417,7 +417,7 @@ router.put('/auth/modificaralumno/:id_empleado', async (req, res) => {
     nombre,
     rol,
     usuario,
-    contrasena,
+    contrasena
   } = req.body; // Datos del alumno a actualizar recibidos en el cuerpo de la solicitud
 
   try {
@@ -427,22 +427,22 @@ router.put('/auth/modificaralumno/:id_empleado', async (req, res) => {
       nombre,
       rol,
       usuario,
-      contrasena,
+      contrasena
     );
 
     if (updatedAlumno.success) {
       return res.status(200).json({
         success: true,
-        message: 'Datos del alumno actualizados con éxito'
+        message: 'Datos del Empleado actualizados con éxito'
       });
     } else {
       return res.status(400).json({
         success: false,
-        message: updatedAlumno.message || 'No se pudo actualizar los datos del alumno'
+        message: updatedAlumno.message || 'No se pudo actualizar los datos del Empleado'
       });
     }
   } catch (error) {
-    console.error('Error al actualizar los datos del alumno:', error);
+    console.error('Error al actualizar los datos del Empleado:', error);
     return res.status(500).json({ success: false, message: 'Error del servidor', error });
   }
 });

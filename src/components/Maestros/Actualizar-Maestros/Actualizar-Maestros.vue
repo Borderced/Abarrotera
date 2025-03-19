@@ -39,7 +39,7 @@ const modificarDocente = async () => {
 
     // Verificar si la respuesta es exitosa
     if (response.success) {
-      toast.success('Datos del Docente actualizados correctamente.', {
+      toast.success('Datos del Producto actualizados correctamente.', {
         position: 'top-right',
         duration: 5000,
         dismissible: true,
@@ -49,7 +49,7 @@ const modificarDocente = async () => {
       }, 750);
       emit('guardar', response.data); // Emitir el evento 'guardar' al componente padre
     } else {
-      toast.error(response.message || 'Hubo un error al actualizar los datos del docente.', {
+      toast.error(response.message || 'Hubo un error al actualizar los datos del Producto.', {
         position: 'top-right',
         duration: 5000,
         dismissible: true,

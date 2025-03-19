@@ -50,7 +50,7 @@ const modificarAlumno = async () => {
       }, 750);
       emit('guardar', response.data); // Emitir el evento 'guardar' al componente padre
     } else {
-      toast.error(response.message || 'Hubo un error al actualizar los datos del alumno.', {
+      toast.error(response.message || 'Hubo un error al actualizar los datos del Empleado.', {
         position: 'top-right',
         duration: 5000,
         dismissible: true,
@@ -62,7 +62,7 @@ const modificarAlumno = async () => {
       duration: 5000,
       dismissible: true,
     });
-    console.error('Error al modificar el alumno:', error);
+    console.error('Error al modificar el Empleado:', error);
   }
 };
 

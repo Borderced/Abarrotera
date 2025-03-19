@@ -71,12 +71,12 @@ export const actualizarAlumno = async (
 
     // Verificamos si se realizó la actualización
     if (result.affectedRows > 0) {
-      return { success: true, message: 'Alumno actualizado correctamente' };
+      return { success: true, message: 'Empleado actualizado correctamente' };
     } else {
-      return { success: false, message: 'No se encontró el alumno o no se actualizó ningún registro' };
+      return { success: false, message: 'No se encontró el Empleado o no se actualizó ningún registro' };
     }
   } catch (error) {
-    console.error('Error al actualizar el alumno:', error);
-    return { success: false, message: 'Error al actualizar el alumno', error };
+    console.error('Error al actualizar el Empleado:', error);
+    return { success: false, message: 'Error al actualizar el Empleado', error };
   }
 };
