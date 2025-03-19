@@ -39,34 +39,29 @@ export const eliminarDocente = async (iddocente) => {
   }
 };
 export const actualizarDocente = async (
-  id_profesor, nombre, apellido_p, apellido_m, fecha_nac, rfc,
-  telefono, correo, direccion, nss, especialidad, sexo
+  id_producto,
+  nombre_producto,
+  precio_venta,
+  precio_compra,
+  stock,
+  fecha_registro,
 ) => {
-  // Validaciones adicionales
-  if (!id_profesor || !nombre || !apellido_p || !fecha_nac || !rfc || !telefono || !correo || !direccion || !nss || !especialidad || !sexo) {
-    return { success: false, message: 'Todos los campos son obligatorios' };
-  }
+
 
   const query = `
-    UPDATE MAESTROS
+    UPDATE productos
     SET 
-      Nombre = ?, 
-      Apellido_P = ?, 
-      Apellido_M = ?, 
-      Fecha_Nac = ?, 
-      RFC = ?, 
-      Telefono = ?, 
-      Correo = ?, 
-      Direccion = ?, 
-      NSS = ?, 
-      Especialidad = ?, 
-      Sexo = ?
-    WHERE id_profesor = ?
+      NOMBRE_PRODUCTO = ?, 
+      PRECIO_VENTA = ?, 
+      PRECIO_COMPRA = ?, 
+      STOCK = ?, 
+      FECHA_REGISTRO = ?
+    WHERE ID_PRODUCTO = ?
   `;
 
   try {
     const [result] = await connection.execute(query, [
-      nombre, apellido_p, apellido_m, fecha_nac, rfc, telefono, correo, direccion, nss, especialidad, sexo, id_profesor
+      nombre_producto, precio_venta, precio_compra, stock, fecha_registro, id_producto
     ]);
 
     console.log('Resultado de la actualización:', result); // Agregar log para verificar el resultado

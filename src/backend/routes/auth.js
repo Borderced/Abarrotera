@@ -410,80 +410,70 @@ router.put('/auth/modificargrupo', async (req, res) => {
 });
 
 
+// Ruta para modificar los datos del alumno
 router.put('/auth/modificaralumno/:id_empleado', async (req, res) => {
-  console.log("📩 Datos recibidos en req.body:", req.body);
-  console.log("📩 ID recibido en req.params:", req.params.id_empleado);
-
-  const { id_empleado } = req.params;
-  const { nombre, rol, usuario, contrasena } = req.body;
-
-  // Si `req.body` está vacío, el error es que Express no está procesando JSON correctamente
-  if (!nombre || !rol || !usuario || !contrasena) {
-    return res.status(400).json({
-      success: false,
-      message: "❌ Faltan datos en la solicitud",
-    });
-  }
+  const { id_empleado } = req.params; // No_Control del alumno (recibido como parámetro en la URL)
+  const {
+    nombre,
+    rol,
+    usuario,
+    contrasena,
+  } = req.body; // Datos del alumno a actualizar recibidos en el cuerpo de la solicitud
 
   try {
-    const updatedAlumno = await actualizarAlumno(id_empleado, nombre, rol, usuario, contrasena);
+    // Llamamos a la función que actualiza los datos del alumno
+    const updatedAlumno = await actualizarAlumno(
+      id_empleado,
+      nombre,
+      rol,
+      usuario,
+      contrasena,
+    );
 
     if (updatedAlumno.success) {
       return res.status(200).json({
         success: true,
-        message: "Datos del empleado actualizados con éxito",
+        message: 'Datos del alumno actualizados con éxito'
       });
     } else {
       return res.status(400).json({
         success: false,
-        message: updatedAlumno.message || "No se pudo actualizar los datos del alumno",
+        message: updatedAlumno.message || 'No se pudo actualizar los datos del alumno'
       });
     }
   } catch (error) {
-    console.error("❌ Error al actualizar los datos del alumno:", error);
-    return res.status(500).json({ success: false, message: "Error del servidor", error });
+    console.error('Error al actualizar los datos del alumno:', error);
+    return res.status(500).json({ success: false, message: 'Error del servidor', error });
   }
 });
 
 
 // Ruta para modificar los datos del docente
-router.put('/auth/modificardocente/:id_profesor', async (req, res) => {
-  const { id_profesor } = req.params; // No_Control del docente (recibido como parámetro en la URL)
+router.put('/auth/modificardocente/:id_producto', async (req, res) => {
+  const { id_producto } = req.params; // No_Control del docente (recibido como parámetro en la URL)
   const {
-  nombre,
-  apellidoP,
-  apellidoM,
-  fechaNac,
-  rfc,
-  telefono,
-  correo,
-  direccion,
-  nss,
-  especialidad,
-  sexo
+  nombre_producto,
+  precio_venta,
+  precio_compra,
+  stock,
+  fecha_registro,
   } = req.body; // Datos del docentes a actualizar recibidos en el cuerpo de la solicitud
 
   try {
     // Llamamos a la función que actualiza los datos del docentes
     const updatedDocente = await actualizarDocente(
-      id_profesor,
-      nombre,
-      apellidoP,
-      apellidoM,
-      fechaNac,
-      rfc,
-      telefono,
-      correo,
-      direccion,
-      nss,
-      especialidad,
-      sexo
+      id_producto,
+      nombre_producto,
+      precio_venta,
+      precio_compra,
+      stock,
+      fecha_registro,
     );
 
     if (updatedDocente.success) {
       return res.status(200).json({
         success: true,
-        message: 'Datos del docentes actualizados con éxito'
+        message: 'Datos del producto actualizados con éxito'
       });
     } else {
       return res.status(400).json({

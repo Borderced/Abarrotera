@@ -12,18 +12,12 @@ const props = defineProps({
 });
 const emit = defineEmits(['guardar', 'cancelar']);
 
-const idProfesor = ref (props.docente.id_profesor || '');
-const nombre = ref (props.docente.Nombre || '');
-const apellidoP = ref (props.docente.Apellido_P || '');
-const apellidoM = ref (props.docente.Apellido_M || '');
-const fechaNac = ref (props.docente.Fecha_Nac || '');
-const rfc = ref (props.docente.RFC || '');
-const telefono = ref (props.docente.Telefono || '');
-const correo = ref (props.docente.Correo || '');
-const direccion = ref (props.docente.Direccion || '');
-const nss = ref (props.docente.NSS || '');
-const especialidad = ref (props.docente.Especialidad || '');
-const sexo = ref (props.docente.Sexo || '');
+const id_producto = ref (props.docente.id_producto || '');
+const nombre_producto = ref (props.docente.nombre_producto || '');
+const precio_venta = ref (props.docente.precio_venta || '');
+const precio_compra = ref (props.docente.precio_compra || '');
+const stock = ref (props.docente.stock || '');
+const fecha_registro = ref (props.docente.fecha_registro || '');
 
 // Inicializa el toast para notificaciones
 const toast = useToast();
@@ -31,30 +25,16 @@ const toast = useToast();
 // Función para modificar el alumno
 const modificarDocente = async () => {
   // Validaciones
-  if (!idProfesor.value || !nombre.value || !apellidoP.value || !apellidoM.value || !fechaNac.value || !rfc.value || 
-  !telefono.value || !correo.value || !direccion.value || !nss.value || !especialidad.value || !sexo.value ) {
-    toast.error('Por favor, completa todos los campos del formulario.', {
-      position: 'top-right',
-      duration: 5000,
-      dismissible: true,
-    });
-    return;
-  }
+
   try {
     // Llamada a la API para modificar el alumno
     const response = await actualizarDocente(
-        idProfesor.value,
-        nombre.value,
-        apellidoP.value,
-        apellidoM.value,
-        fechaNac.value,
-        rfc.value,
-        telefono.value,
-        correo.value,
-        direccion.value,
-        nss.value,
-        especialidad.value,
-        sexo.value
+        id_producto.value,
+        nombre_producto.value,
+        precio_venta.value,
+        precio_compra.value,
+        stock.value,
+        fecha_registro.value,
     );
 
     // Verificar si la respuesta es exitosa
@@ -65,7 +45,7 @@ const modificarDocente = async () => {
         dismissible: true,
       });
       setTimeout(() => {
-        window.location.href = `/Docentes`; // Redirigir a la página del panel
+        window.location.href = `/Inventario`; // Redirigir a la página del panel
       }, 750);
       emit('guardar', response.data); // Emitir el evento 'guardar' al componente padre
     } else {
@@ -88,73 +68,40 @@ const modificarDocente = async () => {
 </script>
 
 <template>
-  <div class="alta-docente-container">
-    <h1>Actualizar Docente</h1>
+  <div class="alta-producto-container">
+    <h1>Modificar Producto</h1>
     <form @submit.prevent="modificarDocente">
       <div class="form-group">
-        <label for="id_profesor">ID Profesor:</label>
-        <input type="text" id="id_profesor" v-model="idProfesor" placeholder="ID Profesor" />
+        <label for="id_producto">ID Producto:</label>
+        <input type="text" id="id_producto" v-model="id_producto" placeholder="ID Producto" />
       </div>
 
       <div class="form-group">
-        <label for="nombre">Nombre:</label>
-        <input type="text" id="nombre" v-model="nombre" placeholder="Nombre" />
+        <label for="nombre_producto">Nombre Producto:</label>
+        <input type="text" id="nombre_producto" v-model="nombre_producto" placeholder="Nombre Producto" />
       </div>
 
       <div class="form-group">
-        <label for="apellido_p">Apellido Paterno:</label>
-        <input type="text" id="apellido_p" v-model="apellidoP" placeholder="Apellido Paterno" />
+        <label for="precio_venta">Precio de Venta:</label>
+        <input type="number" id="precio_venta" v-model="precio_venta" placeholder="Precio de Venta" />
       </div>
 
       <div class="form-group">
-        <label for="apellido_m">Apellido Materno:</label>
-        <input type="text" id="apellido_m" v-model="apellidoM" placeholder="Apellido Materno" />
+        <label for="precio_compra">Precio de Compra:</label>
+        <input type="number" id="precio_compra" v-model="precio_compra" placeholder="Precio de Compra" />
       </div>
 
       <div class="form-group">
-        <label for="fecha_nac">Fecha de Nacimiento:</label>
-        <input type="date" id="fecha_nac" v-model="fechaNac" />
+        <label for="stock">Stock:</label>
+        <input type="number" id="stock" v-model="stock" placeholder="Stock" />
       </div>
 
       <div class="form-group">
-        <label for="rfc">RFC:</label>
-        <input type="text" id="rfc" v-model="rfc" placeholder="RFC" />
+        <label for="fecha_registro">Fecha de Registro:</label>
+        <input type="date" id="fecha_registro" v-model="fecha_registro" />
       </div>
 
-      <div class="form-group">
-        <label for="telefono">Teléfono:</label>
-        <input type="tel" id="telefono" v-model="telefono" placeholder="Teléfono" />
-      </div>
-
-      <div class="form-group">
-        <label for="correo">Correo:</label>
-        <input type="email" id="correo" v-model="correo" placeholder="Correo" />
-      </div>
-
-      <div class="form-group">
-        <label for="direccion">Dirección:</label>
-        <input type="text" id="direccion" v-model="direccion" placeholder="Dirección" />
-      </div>
-
-      <div class="form-group">
-        <label for="nss">NSS:</label>
-        <input type="text" id="nss" v-model="nss" placeholder="NSS" />
-      </div>
-
-      <div class="form-group">
-        <label for="especialidad">Especialidad:</label>
-        <input type="text" id="especialidad" v-model="especialidad" placeholder="Especialidad" />
-      </div>
-
-      <div class="form-group">
-        <label for="sexo">Sexo:</label>
-        <select id="sexo" v-model="sexo">
-          <option value="Masculino">Masculino</option>
-          <option value="Femenino">Femenino</option>
-        </select>
-      </div>
-
-      <button type="submit" class="btn-submit">Actualizar Docente</button>
+      <button type="submit" class="btn-submit">Modificar Producto</button>
     </form>
   </div>
 </template>

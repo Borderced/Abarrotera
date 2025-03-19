@@ -42,14 +42,14 @@ export const eliminarAlumno = async (idalumno) => {
 
 export const actualizarAlumno = async (
   id_empleado,
-  nombre, 
-  rol, 
-  usuario, 
-  contrasena, 
+  nombre,
+  rol,
+  usuario,
+  contrasena,
 ) => {
   const query = `
     UPDATE empleados
-    SET  
+    SET 
       NOMBRE = ?, 
       ROL = ?, 
       USUARIO = ?, 
@@ -61,10 +61,10 @@ export const actualizarAlumno = async (
     // Ejecutamos la consulta de actualización con los valores proporcionados
     const [result] = await connection.execute(query, [
       id_empleado,
-      nombre, 
-      rol, 
-      usuario, 
-      contrasena, 
+      nombre,
+      rol,
+      usuario,
+      contrasena
     ]);
 
     console.log('Resultado de la actualización:', result); // Agregar log para verificar el resultado

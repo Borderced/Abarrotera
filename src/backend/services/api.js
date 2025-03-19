@@ -347,60 +347,45 @@ export const actualizarGrupo = async (idGrupo, turno) => {
   }
 };
 
-// Función para actualizar los datos de un alumno
 export const actualizarAlumno = async (
   id_empleado,
-  nombre, 
-  rol, 
-  usuario, 
-  contrasena, 
+  nombre,
+  rol,
+  usuario,
+  contrasena,
 ) => {
   try {
-    const response = await axios.put(
-      `http://localhost:5000/api/auth/modificarAlumno/${id_empleado}`,
-      {
-        nombre: nombre, 
-        rol: rol, 
-        usuario: usuario, 
-        contrasena: contrasena, 
-      }
-    );
+    const response = await axios.put(`http://localhost:5000/api/auth/modificaralumno/${id_empleado}`, {
+      nombre,
+      rol,
+      usuario,
+      contrasena,
+    });
+
     return response.data; // Devuelve la respuesta de la API
   } catch (error) {
     console.error('Error al actualizar los datos del alumno:', error);
     throw error; // Lanza el error para manejarlo en el componente
   }
 };
-
+  
 
 // Función para actualizar los datos de un docente
 export const actualizarDocente = async (
-  id_profesor, 
-  nombre,
-  apellidoP,
-  apellidoM,
-  fechaNac,
-  rfc,
-  telefono,
-  correo,
-  direccion,
-  nss,
-  especialidad,
-  sexo
+  id_producto, 
+  nombre_producto,
+  precio_venta,
+  precio_compra,
+  stock,
+  fecha_registro,
 ) => {
   try {
-    const response = await axios.put(`http://localhost:5000/api/auth/modificardocente/${id_profesor}`, {
-      nombre,
-      apellidoP,
-      apellidoM,
-      fechaNac,
-      rfc,
-      telefono,
-      correo,
-      direccion,
-      nss,
-      especialidad,
-      sexo
+    const response = await axios.put(`http://localhost:5000/api/auth/modificardocente/${id_producto}`, {
+      nombre_producto,
+      precio_venta,
+      precio_compra,
+      stock,
+      fecha_registro,
     });
 
     return response.data; // Devuelve la respuesta de la API

@@ -1,35 +1,42 @@
 <script setup>
-import { ref, defineEmits } from 'vue'; // Variables reactivas y eventos
+import { ref } from 'vue'; // Variables reactivas
 import { useToast } from 'vue-toast-notification'; // Notificaciones
 import 'vue-toast-notification/dist/theme-sugar.css'; // Estilo de notificaciones
-import { actualizarAlumno } from '../../../backend/services/api.js'; // Importar la función de actualizar alumno
+import { actualizarAlumno } from '@/backend/services/api';
+// Props: Recibe el alumno que se está editando
+const props = defineProps({
+  alumno: {
+    type: Object,
+    required: true,
+  },
+});
+
+// Emits: Para comunicarse con el componente padre
+const emit = defineEmits(['guardar', 'cancelar']);
 
 // Variables reactivas para los campos del formulario
-const id_empleado = ref('');
-const nombre = ref('');
-const rol = ref('');
-const usuario = ref('');
-const contrasena = ref('');
+const id_empleado = ref(props.alumno.id_empleado || '');
+const nombre = ref(props.alumno.nombre || '');
+const rol = ref(props.alumno.rol || '');
+const usuario = ref(props.alumno.usuario || '');
+const contrasena = ref(props.alumno.contrasena || '');
 
 // Inicializa el toast para notificaciones
 const toast = useToast();
-const emit = defineEmits(['guardar', 'cancelar']); // Definir eventos
 
 // Función para modificar el alumno
 const modificarAlumno = async () => {
-  if (!id_empleado.value) {
-    toast.error("Debes ingresar un ID válido.");
-    return;
-  }
+  // Validaciones
 
   try {
     // Llamada a la API para modificar el alumno
-    const response = await actualizarAlumno(id_empleado.value, {
-      nombre: nombre.value,
-      rol: rol.value,
-      usuario: usuario.value,
-      contrasena: contrasena.value
-    });
+    const response = await actualizarAlumno(
+      id_empleado.value,
+      nombre.value,
+      rol.value,
+      usuario.value,
+      contrasena.value
+    );
 
     // Verificar si la respuesta es exitosa
     if (response.success) {
@@ -39,9 +46,9 @@ const modificarAlumno = async () => {
         dismissible: true,
       });
       setTimeout(() => {
-        window.location.href = `/Alumnos`; // Redirigir a la página del panel
+        window.location.href = `/Empleados`; // Redirigir a la página del panel
       }, 750);
-      emit('guardar', response.data);
+      emit('guardar', response.data); // Emitir el evento 'guardar' al componente padre
     } else {
       toast.error(response.message || 'Hubo un error al actualizar los datos del alumno.', {
         position: 'top-right',
@@ -57,7 +64,7 @@ const modificarAlumno = async () => {
     });
     console.error('Error al modificar el alumno:', error);
   }
-};  
+};
 
 // Función para cancelar la edición
 const cancelar = () => {
@@ -68,7 +75,7 @@ const cancelar = () => {
 
 <template>
   <div class="alta-alumno-container">
-    <h1>Actualizar Empleado</h1>
+    <h1>Modificar Empleado</h1>
     <form @submit.prevent="modificarAlumno">
       <div class="form-group">
         <label for="id_empleado">Id del empleado:</label>
@@ -95,10 +102,11 @@ const cancelar = () => {
         <input type="password" id="contrasena" v-model="contrasena" placeholder="Contraseña" />
       </div>
 
-      <button type="submit">Registrar</button>
+      <button type="submit">Modificar</button>
     </form>
   </div>
 </template>
+
 <style scoped>
 .alta-alumno-container {
   padding: 2rem;
